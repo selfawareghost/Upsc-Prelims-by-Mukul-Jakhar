@@ -782,16 +782,6 @@ window.SITE = {
       id: 'general-science', name: 'General Science',
       blurb: 'Physics, chemistry and biology at the level of everyday life and the human body.',
       sections: []
-    },
-    {
-      id: 'science', name: 'Science and Technology',
-      blurb: 'Developments in space, defence, biotechnology, computing and energy.',
-      sections: []
-    },
-    {
-      id: 'international', name: 'International Relations',
-      blurb: 'India’s neighbourhood, global partnerships, organisations and groupings.',
-      sections: []
     }
   ],
 
@@ -1519,13 +1509,13 @@ window.Exam = (function () {
   /* -------------------------------------------------------------- syllabus */
   function pageSyllabus() {
     var map = [
-      ['Current events of national and international importance', [['Current affairs', '#/current-affairs'], ['International Relations', '#/subject/international']]],
+      ['Current events of national and international importance', [['Current affairs', '#/current-affairs'], ['International Relations (current affairs)', '#/current-affairs/international']]],
       ['History of India and Indian National Movement', [['History', '#/subject/history']]],
       ['Indian and World Geography: Physical, Social, Economic geography of India and the World', [['Geography', '#/subject/geography']]],
       ['Indian Polity and Governance: Constitution, Political System, Panchayati Raj, Public Policy, Rights Issues', [['Polity and Constitution', '#/subject/polity']]],
       ['Economic and Social Development: Sustainable Development, Poverty, Inclusion, Demographics, Social Sector Initiatives, etc.', [['Economy and Social Development', '#/subject/economy']]],
       ['General issues on Environmental Ecology, Biodiversity, and Climate Change that do not require subject specialisation', [['Environment and Ecology', '#/subject/environment']]],
-      ['General Science', [['General Science', '#/subject/general-science'], ['Science and Technology', '#/subject/science']]]
+      ['General Science', [['General Science', '#/subject/general-science'], ['Science and Technology (current affairs)', '#/current-affairs/science']]]
     ];
     return '<div class="wrap page narrow">' +
       '<h1>Syllabus</h1>' +
@@ -1544,7 +1534,7 @@ window.Exam = (function () {
 
   /* -------------------------------------------------------------- subjects */
   function pageSubjects() {
-    return '<div class="wrap page"><h1>Subjects</h1><p class="lede">Eight subjects cover the Paper I syllabus, each with its own notes and current affairs.</p>' + subjectIndex() + '</div>';
+    return '<div class="wrap page"><h1>Subjects</h1><p class="lede">Six subjects carry the static notes. International Relations and Science and Technology sit under current affairs, since they are current-based.</p>' + subjectIndex() + '</div>';
   }
 
   function subjectNav(s, secId, topicId) {
@@ -1909,11 +1899,12 @@ window.Exam = (function () {
   }
 
   var SUBJ_COLORS = { history: '#c2410c', polity: '#1d4ed8', geography: '#0f766e', economy: '#7c3aed', environment: '#15803d', 'general-science': '#0891b2', science: '#db2777', international: '#a16207', misc: '#6b7280' };
-  function subjName(id) { var s = subject(id); return s ? s.name : 'Miscellaneous'; }
+  var EXTRA_SUBJ = { international: 'International Relations', science: 'Science and Technology' };
+  function subjName(id) { var s = subject(id); return s ? s.name : (EXTRA_SUBJ[id] || 'Miscellaneous'); }
 
   function viewOverview(paper) {
     var qs = paper.questions, N = qs.length;
-    var ids = S.subjects.map(function (s) { return s.id; }).concat(['misc']);
+    var ids = S.subjects.map(function (s) { return s.id; }).concat(['international', 'science', 'misc']);
     var bySub = {}; ids.forEach(function (id) { bySub[id] = { total: 0, ca: 0, qs: [] }; });
     var ca = 0, formats = {}, keyDist = { a: 0, b: 0, c: 0, d: 0 }, dropped = [];
     qs.forEach(function (q) {
